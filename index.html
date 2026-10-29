@@ -1,0 +1,208 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frame | My Photo Gallery</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/amazon-cognito-identity-js@6.3.12/dist/amazon-cognito-identity.min.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#">✦ frame<span>.</span></a>
+    <div class="top-actions">
+      <span class="private-label">● Private gallery</span>
+      <button id="signOutBtn" class="btn btn-outline hidden" type="button">Sign out</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-text">
+        <p class="eyebrow">YOUR SPACE, YOUR STORIES</p>
+        <h1>Every picture<br><span>has a place.</span></h1>
+        <p class="hero-description">
+          A calm, secure home for the moments you want to keep close.
+          Upload, organise and revisit your favourite memories.
+        </p>
+        <div class="hero-features">
+          <span>✦ Private by design</span>
+          <span>↗ Simple uploads</span>
+          <span>◌ Your memories</span>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="art-orbit"></div>
+        <div class="art-photo">
+          <div class="art-sun"></div>
+          <div class="art-mountain mountain-one"></div>
+          <div class="art-mountain mountain-two"></div>
+          <div class="art-caption">Somewhere beautiful</div>
+        </div>
+        <span class="sparkle sparkle-one">✳</span>
+        <span class="sparkle sparkle-two">✦</span>
+      </div>
+    </section>
+
+    <section id="authPanel" class="auth-section">
+      <div class="auth-intro">
+        <p class="eyebrow">WELCOME IN</p>
+        <h2>Your memories,<br>just a sign-in away.</h2>
+        <p>Sign in to see your personal gallery, or create an account to start saving your moments.</p>
+        <div class="security-note">
+          <span>⌁</span>
+          <p>Your photos are connected to your account. Only you can access your gallery.</p>
+        </div>
+      </div>
+
+      <div class="auth-card">
+        <div class="auth-tabs">
+          <button class="auth-tab active" data-view="signin" type="button">Sign in</button>
+          <button class="auth-tab" data-view="signup" type="button">Create account</button>
+        </div>
+
+        <form id="signInForm" class="auth-form">
+          <h3>Welcome back</h3>
+          <p class="form-subtitle">Enter your details to continue.</p>
+          <label for="signInEmail">Email address</label>
+          <input id="signInEmail" type="email" placeholder="you@example.com" autocomplete="username" required>
+          <label for="signInPassword">Password</label>
+          <input id="signInPassword" type="password" placeholder="Your password" autocomplete="current-password" required>
+          <button class="btn btn-primary btn-full" type="submit">Sign in <span>→</span></button>
+          <button id="forgotLink" class="text-link" type="button">Forgot your password?</button>
+        </form>
+
+        
+<form id="signUpForm" class="auth-form hidden">
+  <h3>Create your space</h3>
+  <p class="form-subtitle">A few details and you're ready.</p>
+
+  <label for="signUpEmail">Email address</label>
+  <input
+    id="signUpEmail"
+    type="email"
+    placeholder="Enter your email address"
+    required
+  />
+
+  <label for="signUpPassword">Create password</label>
+  <input
+    id="signUpPassword"
+    type="password"
+    placeholder="Create a password"
+    required
+  />
+
+  <label for="signUpConfirmPassword">Confirm password</label>
+  <input
+    id="signUpConfirmPassword"
+    type="password"
+    placeholder="Enter your password again"
+    required
+  />
+
+  <button class="btn btn-primary btn-full" type="submit">
+    Create account →
+  </button>
+
+  <p class="fine-print">You'll receive a confirmation code by email.</p>
+</form>
+
+
+        <form id="confirmForm" class="auth-form hidden">
+          <h3>Check your inbox</h3>
+          <p class="form-subtitle">Enter the confirmation code sent to your email.</p>
+          <label for="confirmEmail">Email address</label>
+          <input id="confirmEmail" type="email" required>
+          <label for="confirmCode">Confirmation code</label>
+          <input id="confirmCode" inputmode="numeric" autocomplete="one-time-code" required>
+          <button class="btn btn-primary btn-full" type="submit">Confirm account <span>→</span></button>
+          <button id="resendCodeBtn" class="text-link" type="button">Resend code</button>
+        </form>
+
+        <form id="forgotForm" class="auth-form hidden">
+          <h3>Reset password</h3>
+          <p class="form-subtitle">We'll send a reset code to your email.</p>
+          <label for="forgotEmail">Email address</label>
+          <input id="forgotEmail" type="email" required>
+          <button class="btn btn-primary btn-full" type="submit">Send reset code <span>→</span></button>
+          <button class="text-link backToSignIn" type="button">Back to sign in</button>
+        </form>
+
+        <form id="resetForm" class="auth-form hidden">
+          <h3>Choose a new password</h3>
+          <p class="form-subtitle">Use the code from your email to finish resetting.</p>
+          <label for="resetEmail">Email address</label>
+          <input id="resetEmail" type="email" required>
+          <label for="resetCode">Reset code</label>
+          <input id="resetCode" inputmode="numeric" required>
+          <label for="resetPassword">New password</label>
+          <input id="resetPassword" type="password" minlength="8" autocomplete="new-password" required>
+          <button class="btn btn-primary btn-full" type="submit">Update password <span>→</span></button>
+          <button class="text-link backToSignIn" type="button">Back to sign in</button>
+        </form>
+
+        <div id="authMessage" class="message hidden" role="status" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section id="galleryPanel" class="gallery-section hidden">
+      <div class="gallery-heading">
+        <div>
+          <p class="eyebrow">YOUR COLLECTION</p>
+          <h2>My gallery<span>.</span></h2>
+          <p id="welcomeText">Your collection, all in one place.</p>
+        </div>
+        <div class="photo-counter">
+          <strong id="photoCount">0</strong>
+          <span>photos saved</span>
+        </div>
+      </div>
+
+      <div class="upload-card">
+        <div class="upload-icon">↥</div>
+        <div class="upload-description">
+          <h3>Add a new memory</h3>
+          <p>Choose a JPG, PNG or WebP image, up to 10 MB.</p>
+        </div>
+        <div class="upload-actions">
+          <label for="photoInput" class="btn btn-light">Choose photo</label>
+          <input id="photoInput" type="file" accept="image/jpeg,image/png,image/webp" hidden>
+          <span id="selectedFile" class="selected-file">No file selected</span>
+          <button id="uploadBtn" class="btn btn-primary" type="button" disabled>Upload photo ↑</button>
+        </div>
+        <div id="uploadProgress" class="progress-area hidden">
+          <div class="progress-track"><span id="progressBar"></span></div>
+          <small id="progressText">Preparing upload…</small>
+        </div>
+      </div>
+
+      <div class="gallery-toolbar">
+        <div>
+          <h3>Saved moments</h3>
+          <p id="gallerySubtext">Your collection, all in one place.</p>
+        </div>
+        <button id="refreshBtn" class="btn btn-outline" type="button">↻ Refresh</button>
+      </div>
+
+      <div id="galleryMessage" class="message hidden" role="status" aria-live="polite"></div>
+      <div id="photoGrid" class="photo-grid"></div>
+
+      <div id="emptyState" class="empty-state">
+        <div class="empty-icon">✧</div>
+        <h3>Your story starts here</h3>
+        <p>Upload your first photo and it will appear here.</p>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <strong>frame<span>.</span></strong>
+      <span>Made for the moments that matter.</span>
+      <span>Private · Personal · Yours</span>
+    </footer>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
