@@ -117,7 +117,7 @@ The API routes are configured with Cognito authorization.
 - Ownership checks before photo deletion.
 - S3 Block Public Access enabled on the original-photo and thumbnail buckets.
 - CloudFront Origin Access Control for private frontend S3 access.
-- IAM permissions for Lambda-to-AWS-service access.
+- IAM execution roles and permissions configured to allow Lambda functions to access the required AWS services.
 
 ## 8. Testing and Results
 
