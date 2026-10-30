@@ -78,6 +78,7 @@ Authenticated users access protected API operations through the configured Cogni
 3. API Gateway invokes the GetUploadUrl Lambda function.
 4. Lambda generates a pre-signed S3 upload URL.
 5. The frontend uploads the photo to the original-photo S3 bucket.
+6. The uploaded image is processed asynchronously through an Amazon S3 event notification.
 
 ### Image Processing
 1. An upload event from the original-photo S3 bucket triggers the ProcessImage Lambda function.
