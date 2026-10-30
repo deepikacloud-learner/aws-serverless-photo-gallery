@@ -38,26 +38,31 @@ The application uses AWS managed and serverless services to provide authenticati
 ## 4. System Architecture
 
 ```mermaid
-flowchart TD
-    A[User Browser] --> B[CloudFront]
-    B --> C[S3 Frontend Bucket]
-    A --> D[Cognito Authentication]
-    A --> E[API Gateway]
-    D --> E
-    E --> F[GetUploadUrl Lambda]
-    F --> G[S3 Original Photos]
-    G --> H[ProcessImage Lambda]
-    H --> I[S3 Thumbnails]
-    H --> J[DynamoDB PhotoMetadata]
-    H --> K[SNS Notifications]
-    E --> L[ListPhotos Lambda]
-    L --> J
-    L --> I
-    E --> M[DeletePhoto Lambda]
-    M --> J
-    M --> G
-    M --> I
-    M --> K
+graph TD
+    U[User Browser] --> CF[CloudFront]
+    CF --> FE[S3 Frontend Bucket]
+
+    U --> C[Cognito Authentication]
+    U --> API[API Gateway]
+    C --> API
+
+    API --> UP[GetUploadUrl Lambda]
+    UP --> ORIG[S3 Original Photos]
+
+    ORIG --> PROC[ProcessImage Lambda]
+    PROC --> THUMB[S3 Thumbnail Bucket]
+    PROC --> DB[DynamoDB PhotoMetadata]
+    PROC --> SNS[SNS Notifications]
+
+    API --> LIST[ListPhotos Lambda]
+    LIST --> DB
+    LIST --> THUMB
+
+    API --> DEL[DeletePhoto Lambda]
+    DEL --> DB
+    DEL --> ORIG
+    DEL --> THUMB
+    DEL --> SNS
 ```
 
 ## 5. Application Workflow
